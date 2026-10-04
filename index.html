@@ -129,11 +129,12 @@ details[open] .rit li{animation:liIn .6s both}
 .slot .btn{margin:0;padding:.45rem 1.1rem;font-size:.95rem;white-space:nowrap}
 @media(max-width:560px){.dh{flex-wrap:wrap}.dh svg{display:none}.med{width:88px;height:88px}.med b{font-size:2.7rem}.slot{border-radius:20px;flex-direction:column;align-items:stretch;text-align:center}.slot .btn{text-align:center}}
 /* venues */
-.venues{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.6rem;max-width:900px;margin:auto}
-.v{padding:2rem 1.4rem;border:2px solid var(--gold);border-radius:18px;background:#fffdf5;position:relative;overflow:hidden}
+.venues{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.6rem;max-width:960px;margin:auto}
+.v{padding:2rem 1.4rem;border:2px solid var(--gold);border-radius:18px;background:#fffdf5;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center}
 .v:before{content:"";position:absolute;inset:-60% -20% auto;height:100%;background:radial-gradient(circle,rgba(245,179,1,.25),transparent 65%);animation:pulse 5s infinite}
 .v>*{position:relative}
 .v h3{font-size:1.9rem;color:var(--maroon)}
+.v iframe{width:100%;height:220px;border:2px solid rgba(201,150,43,.45);border-radius:14px;margin:1.2rem 0;display:block}
 
 /* rsvp */
 input{font:inherit;padding:.7rem 1.1rem;border-radius:99px;border:2px solid var(--gold);width:min(100%,320px);text-align:center;background:var(--ivory)}
@@ -212,8 +213,18 @@ footer .dev{color:var(--marigold);font-size:1.4rem}
   <h2>Find your way</h2>
   <p class="sub">Open the venue in Google Maps.</p>
   <div class="venues">
-    <div class="v"><h3>The VR Farms</h3><p>Sonpur, Bihar<br>Wedding ceremony · Wed 9 Dec · 2:00 PM</p><br><a class="btn" target="_blank" rel="noopener" href="https://maps.app.goo.gl/uJmraV4dDuxKMiVV7">Open Google Maps</a></div>
-    <div class="v"><h3>Mujauna (Home)</h3><p>Matkor &amp; Haldi · Tue 8 Dec · 8:00 AM<br>Grand Reception · Thu 10 Dec · 4:00 PM</p><br><a class="btn" target="_blank" rel="noopener" href="https://maps.app.goo.gl/UVXomfLDHa8PCaER8">Open Google Maps</a></div>
+    <div class="v">
+      <h3>The VR Farms</h3>
+      <p>Sonpur, Bihar<br>Wedding ceremony · Wed 9 Dec · 2:00 PM</p>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3595.389813857985!2d85.1837272!3d25.6915145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed5b5d1a07f27d%3A0x67c30b1917f3f2a4!2sThe%20VR%20Farms%20Sonpur!5e0!3m2!1sen!2sin!4v1700000000000" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="The VR Farms Location Map"></iframe>
+      <a class="btn" target="_blank" rel="noopener" href="https://maps.app.goo.gl/uJmraV4dDuxKMiVV7">Open Google Maps</a>
+    </div>
+    <div class="v">
+      <h3>Mujauna (Home)</h3>
+      <p>Matkor &amp; Haldi · Tue 8 Dec · 8:00 AM<br>Grand Reception · Thu 10 Dec · 4:00 PM</p>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14371.002128652384!2d85.0129499!3d25.7788023!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed4d00236f9f51%3A0x1eb004106beed1eb!2sDevpati%20Niwas!5e0!3m2!1sen!2sin!4v1700000000000" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mujauna Devpati Niwas Location Map"></iframe>
+      <a class="btn" target="_blank" rel="noopener" href="https://maps.app.goo.gl/UVXomfLDHa8PCaER8">Open Google Maps</a>
+    </div>
   </div>
 </section>
 
