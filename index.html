@@ -467,7 +467,7 @@ const D=[
   intro:'An evening of music, dinner and blessings at home, where we welcome family and friends to celebrate with the newly married couple.',g:[]}];
 const gcal=d=>'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Himanshu & Kajal: '+d.t)+'&dates='+d.s+'/'+d.e+'&location='+encodeURIComponent(d.v)+'&details='+encodeURIComponent('Directions: '+d.map);
 $('#days').innerHTML=D.map(d=>`<article class="day" id="d${d.n}"><img class="day-illus" src="${d.img}" alt="${d.t} illustration" loading="lazy"><div class="dh"><div class="med"><b>${d.n}</b><small>Dec</small></div><div><h3>${d.t}</h3><p>${d.dow}, ${d.n} December 2026</p><p>${d.time} · ${d.v}</p></div><svg viewBox="0 0 100 100" aria-hidden="true">${d.icon}</svg></div>
-<div class="db"><p>${d.intro}</p>${d.g.map((g,i)=>`<details${i?'':' open'}><summary>${g[0]}</summary><ul class="rit">${g[1].map(r=>`<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ul></details>`).join('')}
+<div class="db"><p>${d.intro}</p>${d.g.map((g,i)=>`<details><summary>${g[0]}</summary><ul class="rit">${g[1].map(r=>`<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ul></details>`).join('')}
 <div class="act"><a class="btn" target="_blank" rel="noopener" href="${d.map}">Directions</a><a class="btn alt" target="_blank" rel="noopener" href="${gcal(d)}">Add to Google Calendar</a></div></div></article>`).join('');
 
 /* ---------- Countdown ---------- */
