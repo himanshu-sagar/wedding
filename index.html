@@ -94,6 +94,7 @@ section>.sub{max-width:520px;margin:.6rem auto 2.5rem}
 .btn.alt{background:var(--maroon)}
 .days{display:grid;gap:2.4rem;max-width:860px;margin:auto;text-align:left}
 .day{border:2px solid var(--gold);border-radius:28px;background:#fffdf5;box-shadow:0 18px 40px rgba(122,18,52,.16);overflow:hidden;scroll-margin-top:1rem}
+.day-illus{width:100%;height:260px;object-fit:cover;display:block;border-bottom:3px solid var(--gold)}
 .dh{display:flex;gap:1.3rem;align-items:center;padding:1.6rem;background:linear-gradient(120deg,var(--maroon),#a3203f);color:var(--ivory);position:relative;overflow:hidden}
 .dh:before{content:"";position:absolute;right:-70px;top:-70px;width:240px;height:240px;border-radius:50%;border:2px dashed rgba(245,179,1,.5);animation:spin 40s linear infinite}
 .med{flex:none;width:104px;height:104px;border-radius:50%;background:radial-gradient(circle,#fff6e3,#ffe3a0);border:3px solid var(--gold);display:grid;place-content:center;text-align:center;color:var(--maroon);line-height:1;box-shadow:0 0 0 6px rgba(245,179,1,.25)}
@@ -446,7 +447,7 @@ const ic={
  w:'<path d="M18 92h64l-6-14H24z" fill="#f5b301"/><path class="flame" d="M50 14c18 20 16 38 0 52-16-14-18-32 0-52z" fill="#e8820c"/><path class="flame" d="M50 34c9 10 8 20 0 28-8-8-9-18 0-28z" fill="#ffd54a"/>',
  r:'<g class="bloom">'+[-60,-30,0,30,60].map(a=>`<path style="--a:${a}deg" d="M50 84C32 66 36 40 50 22c14 18 18 44 0 62z" fill="${a%60?'#f48fb1':'#ec6a99'}" opacity=".9"/>`).join('')+'</g>'};
 const D=[
- {n:8,dow:'Tuesday',t:'Matkor & Haldi',time:'8:00 AM onwards',v:'Mujauna (Home)',map:MH,s:'20261208T023000Z',e:'20261208T073000Z',icon:ic.h,
+ {n:8,dow:'Tuesday',t:'Matkor & Haldi',time:'8:00 AM onwards',v:'Mujauna (Home)',map:MH,s:'20261208T023000Z',e:'20261208T073000Z',icon:ic.h,img:'illus-haldi.jpg',
   intro:'In a traditional Bihari wedding, Matkor and Haldi take place a day or two before the Baraat. These pre-wedding rituals carry deep cultural, spiritual and social meaning.',
   g:[['Matkor (Matkorwa)',[
     ['Clay collection','Women from the family and neighbourhood walk in procession to a sacred patch of soil, a well or a riverbank, singing traditional Soohar and Geet.'],
@@ -460,7 +461,7 @@ const D=[
     ['Kangan Bandhan','A sacred thread holding turmeric, iron and a betel nut is tied around the groom\'s wrist to ward off negative energy.'],
     ['Geet & folk music','Female relatives sing traditional Bihari folk songs for Matkor and Haldi all day long.'],
     ['Community feast','A lively meal for close family and neighbours begins the wedding festivities.']]]]},
- {n:9,dow:'Wednesday',t:'Wedding Ceremony (Shadi)',time:'2:00 PM onwards',v:'The VR Farms, Sonpur, Bihar',map:MV,s:'20261209T083000Z',e:'20261209T183000Z',icon:ic.w,
+ {n:9,dow:'Wednesday',t:'Wedding Ceremony (Shadi)',time:'2:00 PM onwards',v:'The VR Farms, Sonpur, Bihar',map:MV,s:'20261209T083000Z',e:'20261209T183000Z',icon:ic.w,img:'illus-wedding.jpg',
   intro:'The main day of the wedding, from the first blessings at home to the seven rounds around the sacred fire.',
   g:[['Morning rituals at the groom\'s house',[
     ['Silpoha & Imli Ghutai','Early in the morning, the groom\'s mother performs Silpoha, symbolically grinding rice (akshat) on a flat stone (silbatta) under a shawl to seek blessings. In Imli Ghutai, the groom\'s maternal uncle (Mama) offers him a betel nut (supari) to hold between his teeth. His mother takes it and eats it, promising to absorb any negative energy directed at her son.'],
@@ -477,10 +478,10 @@ const D=[
     ['Kanyadaan','The bride\'s parents solemnly give away her hand to the groom.'],
     ['Kuldevta Puja & Bhaanwar','The couple pray to their ancestral deities (Kuldevta) and take seven rounds (Bhaanwar/Saptapadi) around the sacred fire, taking their vows.'],
     ['Sindoor Daan','The groom fills the parting of the bride\'s hair (maang) with vermilion, completing the sacred union.']]]]},
- {n:10,dow:'Thursday',t:'Grand Reception',time:'4:00 PM onwards',v:'Mujauna (Home)',map:MH,s:'20261210T103000Z',e:'20261210T163000Z',icon:ic.r,
+ {n:10,dow:'Thursday',t:'Grand Reception',time:'4:00 PM onwards',v:'Mujauna (Home)',map:MH,s:'20261210T103000Z',e:'20261210T163000Z',icon:ic.r,img:'illus-reception.jpg',
   intro:'An evening of music, dinner and blessings at home, where we welcome family and friends to celebrate with the newly married couple.',g:[]}];
 const gcal=d=>'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Himanshu & Kajal: '+d.t)+'&dates='+d.s+'/'+d.e+'&location='+encodeURIComponent(d.v)+'&details='+encodeURIComponent('Directions: '+d.map);
-$('#days').innerHTML=D.map(d=>`<article class="day" id="d${d.n}"><div class="dh"><div class="med"><b>${d.n}</b><small>Dec</small></div><div><h3>${d.t}</h3><p>${d.dow}, ${d.n} December 2026</p><p>${d.time} · ${d.v}</p></div><svg viewBox="0 0 100 100" aria-hidden="true">${d.icon}</svg></div>
+$('#days').innerHTML=D.map(d=>`<article class="day" id="d${d.n}"><img class="day-illus" src="${d.img}" alt="${d.t} illustration" loading="lazy"><div class="dh"><div class="med"><b>${d.n}</b><small>Dec</small></div><div><h3>${d.t}</h3><p>${d.dow}, ${d.n} December 2026</p><p>${d.time} · ${d.v}</p></div><svg viewBox="0 0 100 100" aria-hidden="true">${d.icon}</svg></div>
 <div class="db"><p>${d.intro}</p>${d.g.map((g,i)=>`<details${i?'':' open'}><summary>${g[0]}</summary><ul class="rit">${g[1].map(r=>`<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ul></details>`).join('')}
 <div class="act"><a class="btn" target="_blank" rel="noopener" href="${d.map}">Directions</a><a class="btn alt" target="_blank" rel="noopener" href="${gcal(d)}">Add to Google Calendar</a></div></div></article>`).join('');
 
