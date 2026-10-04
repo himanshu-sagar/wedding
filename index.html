@@ -141,8 +141,21 @@ input{font:inherit;padding:.7rem 1.1rem;border-radius:99px;border:2px solid var(
 #mute{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);background:var(--maroon);color:#fff;font-size:1.4rem;cursor:pointer;display:none;box-shadow:0 6px 16px rgba(0,0,0,.35)}
 body.in #mute{display:block}
 footer{padding:3rem 1rem;text-align:center;background:var(--maroon);color:var(--ivory)}
-footer .dev{color:var(--marigold);font-size:1.4rem}
-@media(max-width:480px){section{padding:4rem 1rem}.cd b{font-size:1.9rem}}
+/* interactive components */
+.day,.v,.cal{transition:transform .25s ease-out,box-shadow .25s ease-out;transform-style:preserve-3d;will-change:transform}
+.day:hover,.v:hover,.cal:hover{box-shadow:0 18px 40px rgba(122,18,52,.22)}
+.names{cursor:pointer;transition:transform .3s ease,filter .3s ease}
+.names:hover{transform:scale(1.02);filter:drop-shadow(0 0 16px rgba(245,179,1,.65))}
+.cd{cursor:pointer;transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
+.cd:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 8px 18px rgba(245,179,1,.3);background:rgba(255,246,227,.18)}
+@media(hover:none){.day:active,.v:active,.cd:active,.btn:active{transform:scale(.97)}}
+#bless-btn{position:fixed;left:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;height:48px;padding:0 16px;border-radius:99px;border:2px solid var(--gold);background:linear-gradient(135deg,var(--maroon),#9a1b44);color:var(--ivory);font:500 .95rem Hind,sans-serif;cursor:pointer;display:none;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(122,18,52,.35);transition:transform .2s,box-shadow .2s;user-select:none}
+body.in #bless-btn{display:inline-flex}
+#bless-btn:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 10px 24px rgba(232,130,12,.45)}
+#bless-btn:active{transform:scale(.95)}
+.bless-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(122,18,52,.95);color:var(--ivory);padding:.7rem 1.6rem;border:2px solid var(--gold);border-radius:99px;font:500 1.05rem 'Cormorant Garamond',serif;box-shadow:0 10px 30px rgba(0,0,0,.35);pointer-events:none;opacity:0;transition:opacity .3s,transform .3s cubic-bezier(.2,1,.3,1);z-index:90;text-align:center;max-width:92vw;white-space:nowrap}
+.bless-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:480px){section{padding:4rem 1rem}.cd b{font-size:1.9rem}#bless-btn{font-size:.85rem;padding:0 12px;height:44px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}.names span{opacity:1;transform:none;filter:none}}
 </style>
 </head>
@@ -150,6 +163,7 @@ footer .dev{color:var(--marigold);font-size:1.4rem}
 <canvas id="petals" aria-hidden="true"></canvas>
 
 <button id="mute" aria-label="Mute music" aria-pressed="false">🔊</button>
+<button id="bless-btn" aria-label="Shower flower blessings">🌸 पुष्प वर्षा</button>
 
 <div id="gate">
   <div class="door l"></div><div class="door r"></div>
@@ -257,25 +271,78 @@ $$(".mandala").forEach((m,k)=>{
   m.innerHTML=h+'<circle r="14" fill="none" stroke="#7a1233" stroke-width=".8"/><circle r="6" fill="#f5b301" opacity=".6"/>';
 });
 
-/* ---------- Petals ---------- */
+/* ---------- Petals & Interactive Particles ---------- */
 const cv=$('#petals'),cx=cv.getContext('2d');let P=[];
 const size=()=>{cv.width=innerWidth;cv.height=innerHeight};size();addEventListener('resize',size);
 const cols=['#f5b301','#e8820c','#ffcf4a','#d9480f','#fff0b3'];
 function petal(top){return{x:Math.random()*cv.width,y:top?-20:Math.random()*cv.height,r:5+Math.random()*7,s:.6+Math.random()*1.4,a:Math.random()*6,v:Math.random()*.03+.01,c:cols[Math.random()*5|0],life:Infinity}}
 function burst(n=140){for(let i=0;i<n;i++){const p=petal(true);p.y=-Math.random()*cv.height*.6;p.life=1;P.push(p)}}
 for(let i=0;i<(reduce?0:22);i++)P.push(petal());
+
+function spawnInteractive(x,y,count=1,isBurst=false){
+  if(reduce)return;
+  for(let i=0;i<count;i++){
+    const ang=isBurst?(i/count)*6.283+Math.random()*.3:Math.random()*6.283;
+    const spd=isBurst?1.6+Math.random()*3.5:.4+Math.random()*1.6;
+    const isSpark=Math.random()>.35;
+    P.push({
+      x:x+(Math.random()-.5)*12,
+      y:y+(Math.random()-.5)*12,
+      vx:Math.cos(ang)*spd,
+      vy:Math.sin(ang)*spd+(isBurst?-1.2:.3),
+      r:isSpark?2+Math.random()*2.5:4+Math.random()*5,
+      a:Math.random()*6,
+      v:Math.random()*.06+.02,
+      c:isSpark?(Math.random()>.5?'#ffffff':'#ffd54a'):cols[Math.random()*5|0],
+      sparkle:isSpark,
+      alpha:1,
+      fade:isBurst?.018+Math.random()*.02:.03+Math.random()*.03,
+      life:1
+    });
+  }
+}
+
 (function loop(){
   cx.clearRect(0,0,cv.width,cv.height);
-  P=P.filter(p=>p.y<cv.height+30);
+  P=P.filter(p=>p.y<cv.height+30&&(p.alpha===undefined||p.alpha>0.04));
   P.forEach(p=>{
-    p.y+=p.s;p.a+=p.v;p.x+=Math.sin(p.a)*1.1;
-    cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.scale(1,Math.abs(Math.cos(p.a*1.3))*.7+.3);
-    cx.fillStyle=p.c;cx.beginPath();cx.ellipse(0,0,p.r,p.r*.55,0,0,7);cx.fill();cx.restore();
+    if(p.vx!==undefined){
+      p.x+=p.vx;p.y+=p.vy;p.vx*=.95;p.vy+=.07;
+      if(p.alpha!==undefined)p.alpha-=p.fade;
+    }else{
+      p.y+=p.s;p.a+=p.v;p.x+=Math.sin(p.a)*1.1;
+    }
+    cx.save();
+    if(p.alpha!==undefined)cx.globalAlpha=Math.max(0,p.alpha);
+    cx.translate(p.x,p.y);
+    if(p.sparkle){
+      cx.fillStyle=p.c;
+      cx.shadowColor='#f5b301';cx.shadowBlur=8;
+      cx.beginPath();cx.arc(0,0,p.r,0,7);cx.fill();
+    }else{
+      cx.rotate(p.a||0);cx.scale(1,Math.abs(Math.cos((p.a||0)*1.3))*.7+.3);
+      cx.fillStyle=p.c;cx.beginPath();cx.ellipse(0,0,p.r,p.r*.55,0,0,7);cx.fill();
+    }
+    cx.restore();
     if(p.y>cv.height&&p.life===Infinity){p.y=-20;p.x=Math.random()*cv.width}
   });
-  if(!reduce&&P.length<22)P.push(petal(true));
+  if(!reduce&&P.filter(p=>p.life===Infinity).length<22)P.push(petal(true));
   requestAnimationFrame(loop);
 })();
+
+/* Pointer & Touch trail */
+let lastT=0;
+function onMove(e){
+  const now=performance.now();if(now-lastT<28)return;lastT=now;
+  const x=e.clientX??e.touches?.[0]?.clientX, y=e.clientY??e.touches?.[0]?.clientY;
+  if(x!==undefined&&y!==undefined)spawnInteractive(x,y,2,false);
+}
+window.addEventListener('pointermove',onMove,{passive:true});
+window.addEventListener('touchmove',onMove,{passive:true});
+window.addEventListener('pointerdown',e=>{
+  if(e.target.closest('input,iframe,a,button'))return;
+  spawnInteractive(e.clientX,e.clientY,12,true);
+},{passive:true});
 
 /* ---------- Bell sound ---------- */
 let ac;
@@ -435,6 +502,60 @@ function wa(){
   $('#wa1').href='https://wa.me/919852467064?text='+m;$('#wa2').href='https://wa.me/918796372122?text='+m;
 }
 g.oninput=wa;wa();
+
+/* ---------- Interactive 3D Card Tilt ---------- */
+if(!reduce&&window.matchMedia('(hover:hover)').matches){
+  $$('.day, .v, .cal').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-0.5;
+      const y=(e.clientY-r.top)/r.height-0.5;
+      card.style.transform=`perspective(900px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave',()=>{card.style.transform=''});
+  });
+}
+
+/* ---------- Couple Names Click Sparkle ---------- */
+const namesEl=$('.names');
+if(namesEl){
+  namesEl.addEventListener('click',e=>{
+    burst(60);bell();
+    spawnInteractive(e.clientX||innerWidth/2,e.clientY||innerHeight/3,16,true);
+  });
+}
+
+/* ---------- Countdown Box Touch/Click Sparkle ---------- */
+$$('.cd').forEach(el=>{
+  el.addEventListener('click',e=>{
+    spawnInteractive(e.clientX||el.getBoundingClientRect().left+40,e.clientY||el.getBoundingClientRect().top+40,10,true);
+  });
+});
+
+/* ---------- Pushp Varsha / Blessings Button ---------- */
+const blessBtn=$('#bless-btn');
+if(blessBtn){
+  const blessings=[
+    '🌸 पुष्प वर्षा! Congratulations to Himanshu & Kajal 🌸',
+    '🪔 शुभ विवाह! May your bond be filled with joy and eternal love 🪔',
+    '✨ मंगलम् भगवान विष्णुः, मंगलम् गरुड़ध्वजः ✨',
+    '💛 Heartiest Blessings & Best Wishes 💛',
+    '🌺 हर हर महादेव! हर कदम पर सुख, शांति और समृद्धि 🌺'
+  ];
+  const toast=document.createElement('div');
+  toast.className='bless-toast';
+  document.body.appendChild(toast);
+  let toastTimer;
+  blessBtn.addEventListener('click',e=>{
+    burst(90);bell();
+    const r=blessBtn.getBoundingClientRect();
+    spawnInteractive(r.left+r.width/2,r.top,18,true);
+    toast.textContent=blessings[Math.random()*blessings.length|0];
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>toast.classList.remove('show'),2800);
+  });
+}
 </script>
 </body>
 </html>
