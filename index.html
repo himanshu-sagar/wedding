@@ -153,14 +153,9 @@ details[open] .rit li{animation:liIn .6s both}
 input{font:inherit;padding:.7rem 1.1rem;border-radius:99px;border:2px solid var(--gold);width:min(100%,320px);text-align:center;background:var(--ivory)}
 #mute{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:60;width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);background:var(--maroon);color:#fff;font-size:1.4rem;cursor:pointer;display:none;box-shadow:0 6px 16px rgba(0,0,0,.35)}
 body.in #mute{display:block}
-/* invitation poster */
-.poster-container{max-width:820px;margin:auto;padding:0 1rem;position:relative}
-.poster-img{width:100%;height:auto;border-radius:20px;border:3px solid var(--gold);box-shadow:0 18px 45px rgba(122,18,52,.28);display:block;transition:transform .25s ease-out,box-shadow .25s ease-out;will-change:transform}
-.poster-img:hover{box-shadow:0 24px 55px rgba(122,18,52,.38)}
-.poster-actions{margin-top:1.4rem;text-align:center}
 /* interactive components */
-.day,.v,.cal,.poster-img{transition:transform .25s ease-out,box-shadow .25s ease-out;transform-style:preserve-3d;will-change:transform}
-.day:hover,.v:hover,.cal:hover,.poster-img:hover{box-shadow:0 18px 40px rgba(122,18,52,.22)}
+.day,.v,.cal{transition:transform .25s ease-out,box-shadow .25s ease-out;transform-style:preserve-3d;will-change:transform}
+.day:hover,.v:hover,.cal:hover{box-shadow:0 18px 40px rgba(122,18,52,.22)}
 .names{cursor:pointer;transition:transform .3s ease,filter .3s ease}
 .names:hover{transform:scale(1.02);filter:drop-shadow(0 0 16px rgba(245,179,1,.65))}
 .cd{cursor:pointer;transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
@@ -203,16 +198,6 @@ body.in #bless-btn{display:inline-flex}
   </div>
 </header>
 
-<section id="invitation">
-  <h2>Wedding Invitation</h2>
-  <p class="sub">With great joy, we invite you and your family to bless our union.</p>
-  <div class="poster-container">
-    <img src="og-card.jpg" alt="Himanshu & Kajal Wedding Invitation Card" class="poster-img" loading="eager">
-    <div class="poster-actions">
-      <a class="btn" href="og-card.jpg" download="Himanshu-Kajal-Wedding-Invitation.jpg">Download Invitation Card</a>
-    </div>
-  </div>
-</section>
 
 <section class="dark" id="countdown">
   <h2>Counting down to the pheras</h2>
@@ -533,7 +518,7 @@ g.oninput=wa;wa();
 
 /* ---------- Interactive 3D Card Tilt ---------- */
 if(!reduce&&window.matchMedia('(hover:hover)').matches){
-  $$('.day, .v, .cal, .poster-img').forEach(card=>{
+  $$('.day, .v, .cal').forEach(card=>{
     card.addEventListener('mousemove',e=>{
       const r=card.getBoundingClientRect();
       const x=(e.clientX-r.left)/r.width-0.5;
@@ -541,13 +526,6 @@ if(!reduce&&window.matchMedia('(hover:hover)').matches){
       card.style.transform=`perspective(900px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateY(-4px)`;
     });
     card.addEventListener('mouseleave',()=>{card.style.transform=''});
-  });
-}
-
-const posterEl=$('.poster-img');
-if(posterEl){
-  posterEl.addEventListener('click',e=>{
-    spawnInteractive(e.clientX,e.clientY,14,true);
   });
 }
 
